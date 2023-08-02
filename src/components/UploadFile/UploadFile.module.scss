@@ -1,12 +1,14 @@
+@import '@/assets/styles/vars.scss';
+
 .label {
 	position: relative;
-	border: 1px solid #bc98ea;
+	border: 1px solid $dominant;
 	padding: 10px 20px;
 	width: 400px;
 	height: 300px;
-	color: #bc98ea;
+	color: $dominant;
 	font-size: 16px;
-	background-color: #2f3031;
+	background-color: $black-750;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -24,11 +26,11 @@
 	}
 
 	&.active {
-		background-color: #737373;
+		background-color: $black-750;
 	}
 
 	&.error {
-		border-color: #bc3174;
-		color: #bc3174;
+		border-color: $warning;
+		color: $warning;
 	}
 }

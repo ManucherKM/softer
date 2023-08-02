@@ -1,0 +1,23 @@
+@import '@/assets/styles/vars.scss';
+
+.spinner {
+	flex-shrink: 0;
+	fill: none;
+	width: 1.3rem;
+	height: 1.3rem;
+	animation: spin 500ms infinite linear;
+
+	path {
+		stroke-width: 2px;
+		stroke: $dominant;
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+}

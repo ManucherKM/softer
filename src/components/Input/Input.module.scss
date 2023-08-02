@@ -1,0 +1,19 @@
+@import '@/assets/styles/vars.scss';
+
+.input {
+	outline: none;
+	border-radius: 8px;
+	color: $dominant;
+	padding: 10px 20px;
+	border: 1px solid transparent;
+	background-color: $black-750;
+	width: 400px;
+
+	&:focus {
+		border-color: $dominant;
+	}
+
+	&::placeholder {
+		color: $black-500;
+	}
+}

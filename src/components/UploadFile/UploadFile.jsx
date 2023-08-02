@@ -1,3 +1,6 @@
+// Components
+import { Spinner } from '../Spinner/Spinner'
+
 // Styles
 import classes from './UploadFile.module.scss'
 
@@ -6,9 +9,12 @@ import { useEffect, useState } from 'react'
 import { useStore } from '@/store'
 import clsx from 'clsx'
 
-export const UploadFile = () => {
+export const UploadFile = props => {
 	// State in which files are stored
 	const [files, setFiles] = useState([])
+
+	// Status to loading.
+	const [loading, setLoading] = useState(false)
 
 	// The state by which we determine whether the user is dragging and dropping files.
 	const [isDrag, setIsDrag] = useState(false)
@@ -36,6 +42,9 @@ export const UploadFile = () => {
 
 	// Handler function for the "drop" event.
 	function dropHandler(e) {
+		// Changing the loading state.
+		setLoading(true)
+
 		// Prevent browser events by default.
 		e.preventDefault()
 
@@ -49,6 +58,12 @@ export const UploadFile = () => {
 		if (currentFiles.length > 100) {
 			// We add our error to the list of errors first.
 			setError(p => [msg, ...p])
+
+			// Change the "isDrag" state to false.
+			setIsDrag(false)
+
+			// Changing the loading state.
+			setLoading(false)
 			return
 		}
 
@@ -68,9 +83,15 @@ export const UploadFile = () => {
 
 		// Change the "isDrag" state to false.
 		setIsDrag(false)
+
+		// Changing the loading state.
+		setLoading(false)
 	}
 
 	function changeHandler(e) {
+		// Changing the loading state.
+		setLoading(true)
+
 		// The message that will be sent when the number of files is exceeded.
 		const msg = 'Превышен лимит количества файлов'
 
@@ -81,6 +102,9 @@ export const UploadFile = () => {
 		if (currentFiles.length > 100) {
 			// We add our error to the list of errors first.
 			setError(p => [msg, ...p])
+
+			// Changing the loading state.
+			setLoading(false)
 			return
 		}
 
@@ -97,11 +121,16 @@ export const UploadFile = () => {
 
 		// Change the state of "files".
 		setFiles(currentFiles)
+
+		// Changing the loading state.
+		setLoading(false)
 	}
 
 	// Each time the files are changed, we send them to Yandex disk.
 	useEffect(() => {
-		sendFiles(files)
+		if (files.length !== 0) {
+			sendFiles(files)
+		}
 	}, [files])
 
 	// We take out the used styles in a variable.
@@ -118,22 +147,37 @@ export const UploadFile = () => {
 			onDragOver={dragOverHandler}
 			onDrop={dropHandler}
 		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="32"
-				height="40"
-				viewBox="0 0 32 40"
-				fill="none"
-			>
-				<path
-					d="M18 14V3L29 14M4 0C1.78 0 0 1.78 0 4V36C0 37.0609 0.421427 38.0783 1.17157 38.8284C1.92172 39.5786 2.93913 40 4 40H28C29.0609 40 30.0783 39.5786 30.8284 38.8284C31.5786 38.0783 32 37.0609 32 36V12L20 0H4Z"
-					fill="#BC98EA"
-				/>
-			</svg>
-			<span>
-				{error.length !== 0 ? error[0] : `Загружено файлов: ${files.length}`}
-			</span>
-			<input type="file" multiple onChange={changeHandler} min={1} max={100} />
+			{loading ? (
+				<Spinner />
+			) : (
+				<>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="32"
+						height="40"
+						viewBox="0 0 32 40"
+						fill="none"
+					>
+						<path
+							d="M18 14V3L29 14M4 0C1.78 0 0 1.78 0 4V36C0 37.0609 0.421427 38.0783 1.17157 38.8284C1.92172 39.5786 2.93913 40 4 40H28C29.0609 40 30.0783 39.5786 30.8284 38.8284C31.5786 38.0783 32 37.0609 32 36V12L20 0H4Z"
+							fill="#BC98EA"
+						/>
+					</svg>
+					<span>
+						{error.length !== 0
+							? error[0]
+							: `Загружено файлов: ${files.length}`}
+					</span>
+					<input
+						type="file"
+						multiple
+						onChange={changeHandler}
+						min={1}
+						max={100}
+						{...props}
+					/>
+				</>
+			)}
 		</label>
 	)
 }

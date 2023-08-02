@@ -26,14 +26,20 @@ export const useStore = create(
 					// URL to get the url to download the file.
 					const url = 'https://cloud-api.yandex.net/v1/disk/resources/upload'
 
+					// A variable for storing promises.
+					const results = []
+
 					// We loop through the files received from the user.
 					for (const file of files) {
 						// Generate config for correct work with API.
 						const config = getSendFileConfig(token, 'test/' + file.name)
 
-						// Send file to Yandex Disk.
-						await sendFileToDisk(url, config, file)
+						// We add the promis to the result variable.
+						results.push(sendFileToDisk(url, config, file))
 					}
+
+					// Waiting for all the promises to be fulfilled.
+					await Promise.all(results)
 
 					// If all was successful - return true.
 					return true

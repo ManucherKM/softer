@@ -42,9 +42,6 @@ export const UploadFile = props => {
 
 	// Handler function for the "drop" event.
 	function dropHandler(e) {
-		// Changing the loading state.
-		setLoading(true)
-
 		// Prevent browser events by default.
 		e.preventDefault()
 
@@ -62,8 +59,6 @@ export const UploadFile = props => {
 			// Change the "isDrag" state to false.
 			setIsDrag(false)
 
-			// Changing the loading state.
-			setLoading(false)
 			return
 		}
 
@@ -83,15 +78,9 @@ export const UploadFile = props => {
 
 		// Change the "isDrag" state to false.
 		setIsDrag(false)
-
-		// Changing the loading state.
-		setLoading(false)
 	}
 
 	function changeHandler(e) {
-		// Changing the loading state.
-		setLoading(true)
-
 		// The message that will be sent when the number of files is exceeded.
 		const msg = 'Превышен лимит количества файлов'
 
@@ -103,8 +92,6 @@ export const UploadFile = props => {
 			// We add our error to the list of errors first.
 			setError(p => [msg, ...p])
 
-			// Changing the loading state.
-			setLoading(false)
 			return
 		}
 
@@ -121,15 +108,23 @@ export const UploadFile = props => {
 
 		// Change the state of "files".
 		setFiles(currentFiles)
-
-		// Changing the loading state.
-		setLoading(false)
 	}
 
 	// Each time the files are changed, we send them to Yandex disk.
 	useEffect(() => {
 		if (files.length !== 0) {
-			sendFiles(files)
+			const fetchFiles = async () => {
+				// Changing the loading state.
+				setLoading(true)
+
+				// Send files
+				await sendFiles(files)
+
+				// Changing the loading state.
+				setLoading(false)
+			}
+
+			fetchFiles()
 		}
 	}, [files])
 

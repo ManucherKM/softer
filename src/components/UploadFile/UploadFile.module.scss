@@ -1,9 +1,19 @@
 .label {
 	position: relative;
-	border: 1px solid teal;
+	border: 1px solid #bc98ea;
 	padding: 10px 20px;
+	width: 400px;
+	height: 300px;
+	color: #bc98ea;
+	font-size: 16px;
+	background-color: #2f3031;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	border-radius: 1rem;
 	cursor: pointer;
-	transition: border 100ms;
 
 	input {
 		width: 0.01px;
@@ -14,8 +24,11 @@
 	}
 
 	&.active {
-		transition: border 100ms;
-		border-width: 2px;
-		border-radius: 12px;
+		background-color: #737373;
+	}
+
+	&.error {
+		border-color: #bc3174;
+		color: #bc3174;
 	}
 }
